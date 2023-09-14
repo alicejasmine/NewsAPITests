@@ -21,18 +21,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Run API
-      run: 
-        cd api && dotnet run & (
+    - name: Run and stop API
+      run: cd api && dotnet run & (sleep 20  kill -9 $(lsof -t -i:5000))
       env: 
         pgconn: ${{secrets.PGCONN}}
 
-    - name: Wait for API to start
-      run: sleep 20 
-
-    - name: Stop API
-      run: 
-        kill -9 $(lsof -t -i:5000)
+  
+       
         
 
   
