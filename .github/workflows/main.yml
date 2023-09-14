@@ -23,10 +23,12 @@ jobs:
 
     - name: Run API
       run: 
-        dotnet run &
+        cd api && dotnet run & (
+      env: 
+        pgconn: ${{secrets.PGCONN}}
 
     - name: Wait for API to start
-      run: sleep 40 
+      run: sleep 20 
 
     - name: Stop API
       run: 
