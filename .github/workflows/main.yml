@@ -18,21 +18,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
+      - uses: actions/checkout@v3
       - name: Setup dotnet
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: |
-            7.0.0
+          dotnet-version: | 
+            8.0.x
 
-      - name: Run and stop API
-        run: |
-          cd api && dotnet run & sleep 20 && (kill -9 $(lsof -t -i:5000))
-          env: 
+      - name: Run, test and shutdown
+        run: cd Api && dotnet run & (sleep 20 && cd NewsAPITests && dotnet test && kill -9 $(lsof -t -i:5000))
+        env:
           pgconn: ${{secrets.PGCONN}}
-
   
        
         
